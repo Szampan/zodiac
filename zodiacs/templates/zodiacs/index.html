@@ -1,3 +1,15 @@
 <p>Hello 🍻</p>
 
-<p>Tu będzie pole tekstowe</p>
+<form method="POST" action="{% url 'zodiacs:index' %}">
+    {% csrf_token %}
+    <label for="date">Podaj datę urodzin (dd/mm/rrrr): </label>
+    <input type="text" name="birthday">
+    <input type="submit" name="submit">
+</form>
+
+
+<p>Input: {{ input }}</p>
+<p>Valid format: {{ valid }}</p>
+<p>Date: {{ date }}</p>
+<p>Sign: {{ sign }}</p>
+
