@@ -1,7 +1,9 @@
+from datetime import datetime       # test
+
 from django.shortcuts import render
 # from django.http import HttpResponse    # test
 
-from datetime import datetime       # test
+from .models import Sign
 
 # from .forms import BirthForm
 
@@ -22,11 +24,16 @@ from datetime import datetime       # test
 def index(request):
     if request.method == "POST":
         input = request.POST.get('birthday')
-        context = {'input': input}
+        context = {'input': input}  # test          # docelowo: {}
+        db_error_message = "Ups, coś poszło nie tak"
 
         if '30/02' in input:
-            context['date'] = (30, 2)
-            context['sign'] = 'Dinosaur'
+            context['date'] = (30, 2)               # temp
+            context['sign'] = 'Dinozaur'            # temp
+            try:
+                context['db_sign'] = Sign.objects.get(name='Dinozaur')
+            except:
+                context['db_sign'] = db_error_message
             return render(request, 'zodiacs/index.html', context)
              
         format = "%d/%m/%Y"
@@ -39,14 +46,22 @@ def index(request):
 
         if valid:
             date = datetime.strptime(input, "%d/%m/%Y")
-            context['date'] = date.month, date.day    
-            context['sign'] = get_sign(date.month, date.day)
+            sign = get_sign(date.month, date.day)
+
+            context['date'] = date.month, date.day      # temp
+            context['sign'] = sign                      # temp
+            signs = Sign.objects.order_by('id')         # temp  
+            context['db_signs'] = signs                 # temp
+
+            try:
+                context['db_sign'] = Sign.objects.get(name=sign)    
+            except:
+                context['db_sign'] = db_error_message
+
+            ####
                    
         return render(request, 'zodiacs/index.html', context)
     return render(request, 'zodiacs/index.html')
-
-
-
 
 
 def test_form(request):
@@ -56,7 +71,6 @@ def test_form(request):
             # return HttpResponse('hello mark')
             context = {'username': input}
             return render(request, 'zodiacs/test_form.html', context)
-
              
         format = "%d/%m/%Y"
         valid = True
@@ -76,68 +90,67 @@ def test_form(request):
 
 
 
-
 def get_sign(month, day):
     if month == 1:
         if day <= 20:
-            return "Capricorn"
+            return "Koziorożec"
         else:
-            return "Aquarius"
+            return "Wodnik"
     elif month == 2:
         if day <= 19:
-            return "Aquarius"
+            return "Wodnik"
         else:
-            return "Pisces"
+            return "Ryby"
     elif month == 3:
         if day <= 20:
-            return "Pisces"
+            return "Ryby"
         else:
-            return "Aries"
+            return "Baran"
     elif month == 4:
         if day <= 20:
-            return "Aries"
+            return "Baran"
         else:
-            return "Taurus"
+            return "Byk"
     elif month == 5:
         if day <= 21:
-            return "Taurus"
+            return "Byk"
         else:
-            return "Gemini"
+            return "Bliźnięta"
     elif month == 6:
         if day <= 21:
-            return "Gemini"
+            return "Bliźnięta"
         else:
-            return "Cancer"
+            return "Rak"
     elif month == 7:
         if day <= 22:
-            return "Cancer"
+            return "Rak"
         else:
-            return "Leo"
+            return "Lew"
     elif month == 8:
         if day <= 23:
-            return "Leo"
+            return "Lew"
         else:
-            return "Virgo"
+            return "Panna"
     elif month == 9:
         if day <= 23:
-            return "Virgo"
+            return "Panna"
         else:
-            return "Libra"
+            return "Waga"
     elif month == 10:
         if day <= 23:
-            return "Libra"
+            return "Waga"
         else:
-            return "Scorpio"
+            return "Skorpion"
     elif month == 11:
         if day <= 22:
-            return "Scorpio"
+            return "Skorpion"
         else:
-            return "Sagittarius"
+            return "Strzelec"
     elif month == 12:
         if day <= 21:
-            return "Sagittarius"
+            return "Strzelec"
         else:
-            return "Capricorn"
+            return "Koziorożec"
     else:
         return "Invalid month"
     
