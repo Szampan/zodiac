@@ -1,4 +1,4 @@
-<p>Hello 🍻</p>
+<h1>Sprawdzacz znaku zodiaku</h1>
 
 <form method="POST" action="{% url 'zodiacs:index' %}">
     {% csrf_token %}
@@ -6,20 +6,6 @@
     <input type="text" name="birthday" placeholder="dd/mm/rrrr">
     <input type="submit" name="submit">
 </form>
+<p>{{ invalid_input }}</p>
 <h3> {{ db_sign }} </h3> 
 <p>{{ db_sign.description }}</p>
-
-<div style="background-color:rgb(216, 216, 216); padding: 20px; margin-top: 100px;">
-    <code style="color:rgb(85, 85, 85);">
-        <p>Input: {{ input }}</p>
-        <p>Valid format: {{ valid }}</p>
-        <p>Date: {{ date }}</p>
-        <p>Sign: {{ sign }}</p>
-
-        <ul>
-            {% for sign in db_signs %}
-            <li>{{sign}} - {{ sign.description }}</li>
-            {% endfor %}
-        </ul>
-    </code>
-</div>

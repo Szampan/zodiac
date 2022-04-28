@@ -6,122 +6,106 @@ from .models import Sign
 
 
 def index(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         input = request.POST.get('birthday')
-        context = {'input': input}  # test          # docelowo: {}
-        db_error_message = "Ups, coś poszło nie tak..."
+        context = {}  
+        db_error_message = 'Ups, coś poszło nie tak...'
 
-        if '30/02' in input:                     
-            context['date'] = (30, 2)               # temp
-            context['sign'] = 'Dinozaur'            # temp
+        if '30/02' in input:                                 
             try:
                 context['db_sign'] = Sign.objects.get(name='Dinozaur')
             except:
-                context['db_sign'] = db_error_message + '1'
-             
-        format = "%d/%m/%Y"
-        valid = True
-        try:
-            valid = bool(datetime.strptime(input, format))
-        except ValueError:
-            valid = False
-        context['valid'] = valid                    # temp
-
-        if valid:
-            date = datetime.strptime(input, "%d/%m/%Y")
-            sign = get_sign(date.month, date.day)
-
-            context['date'] = date.month, date.day      # temp
-            context['sign'] = sign                      # temp
-            signs = Sign.objects.order_by('id')         # temp  
-            context['db_signs'] = signs                 # temp
-
+                context['db_sign'] = db_error_message 
+            return render(request, 'zodiacs/index.html', context)                          
+    
+        if is_input_valid(input):
+            sign = get_sign(input)
             try:
                 context['db_sign'] = Sign.objects.get(name=sign)    
             except:
-                context['db_sign'] = db_error_message + '2'       
-                   
+                context['db_sign'] = db_error_message 
+        else:
+            context['invalid_input'] = 'Nieprawidłowy format daty'   
+
         return render(request, 'zodiacs/index.html', context)
     return render(request, 'zodiacs/index.html')
 
 
+def is_input_valid(input):
+    format = '%d/%m/%Y'
+    valid = True
+    try:
+        valid = bool(datetime.strptime(input, format))
+    except ValueError:
+        valid = False
+    return valid
 
-def get_sign(month, day):
+
+def get_sign(input):
+    date = datetime.strptime(input, '%d/%m/%Y')
+    month, day = date.month, date.day
     if month == 1:
         if day <= 19:
-            return "Koziorożec"
+            return 'Koziorożec'
         else:
-            return "Wodnik"
+            return 'Wodnik'
     elif month == 2:
         if day <= 18:
-            return "Wodnik"
+            return 'Wodnik'
         else:
-            return "Ryby"
+            return 'Ryby'
     elif month == 3:
         if day <= 20:
-            return "Ryby"
+            return 'Ryby'
         else:
-            return "Baran"
+            return 'Baran'
     elif month == 4:
         if day <= 19:
-            return "Baran"
+            return 'Baran'
         else:
-            return "Byk"
+            return 'Byk'
     elif month == 5:
         if day <= 20:
-            return "Byk"
+            return 'Byk'
         else:
-            return "Bliźnięta"
+            return 'Bliźnięta'
     elif month == 6:
         if day <= 20:
-            return "Bliźnięta"
+            return 'Bliźnięta'
         else:
-            return "Rak"
+            return 'Rak'
     elif month == 7:
         if day <= 22:
-            return "Rak"
+            return 'Rak'
         else:
-            return "Lew"
+            return 'Lew'
     elif month == 8:
         if day <= 22:
-            return "Lew"
+            return 'Lew'
         else:
-            return "Panna"
+            return 'Panna'
     elif month == 9:
         if day <= 22:
-            return "Panna"
+            return 'Panna'
         else:
-            return "Waga"
+            return 'Waga'
     elif month == 10:
         if day <= 22:
-            return "Waga"
+            return 'Waga'
         else:
-            return "Skorpion"
+            return 'Skorpion'
     elif month == 11:
         if day <= 21:
-            return "Skorpion"
+            return 'Skorpion'
         else:
-            return "Strzelec"
+            return 'Strzelec'
     elif month == 12:
         if day <= 21:
-            return "Strzelec"
+            return 'Strzelec'
         else:
-            return "Koziorożec"
+            return 'Koziorożec'
     else:
-        return "Invalid month"
+        return 'Invalid month'
     
 
-# def results(request):
-#     # inp_value = request
-#     inp_value = request.GET.get('results', 'Default value')
-#     context = {'inp_value': inp_value, "form": 'Birthform function'}
-#     return render(request, 'zodiacs/results.html', context)
 
-# def test_form(request):
-#     context ={}
-#     form = BirthForm()
-#     context['form']= form
-#     if request.GET:
-#         temp = request.GET['birth_field']
-#         print(type(temp))
-#     return render(request, "zodiacs/test_form.html", context)

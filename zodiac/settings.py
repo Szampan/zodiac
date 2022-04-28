@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'zodiacs',
 
     # Third party apps    
-    # 'bootstrap4',
+    'bootstrap4',
 
     # Default
     'django.contrib.admin',
