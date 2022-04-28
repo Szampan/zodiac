@@ -34,6 +34,9 @@ INSTALLED_APPS = [
     # My Apps
     'zodiacs',
 
+    # Third party apps    
+    # 'bootstrap4',
+
     # Default
     'django.contrib.admin',
     'django.contrib.auth',
