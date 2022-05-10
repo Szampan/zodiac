@@ -1,44 +1,23 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 
 from .models import Sign
-
+from .forms import BirthdayForm
 from .tools import *
 
-
 def index(request):
+
     if request.method == 'POST':
-        input = request.POST.get('birthday')
-        context = {}  
-        db_error_message = 'Ups, coś poszło nie tak... '
-
-        if '30/02' in input:                                 
-            try:
-                context['db_sign'] = Sign.objects.get(name='Dinozaur')
-            except:
-                context['db_sign'] = db_error_message 
-            return render(request, 'zodiacs/index.html', context)                          
-    
-        if is_input_valid(input):
-            sign = get_sign(input)
-            try:
-                context['db_sign'] = Sign.objects.get(name=sign)    
-            except:
-                context['db_sign'] = db_error_message + sign
-        else:
-            context['invalid_input'] = 'Nieprawidłowy format daty'   
-
+        form = BirthdayForm(request.POST)
+        context = {'form': form} 
+        if form.is_valid():
+            sign = get_sign(form.cleaned_data['birthday'])
+            context['db_sign'] = Sign.objects.get(name=sign)    
         return render(request, 'zodiacs/index.html', context)
-    return render(request, 'zodiacs/index.html')
-
-
-# def is_input_valid(input):
-#     format = '%d/%m/%Y'
-#     valid = True
-#     try:
-#         valid = bool(datetime.strptime(input, format))
-#     except ValueError:
-#         valid = False
-#     return valid
+    else:
+        form = BirthdayForm()
+    return render(request, 'zodiacs/index.html', {'form': form})
+           
 
 
     

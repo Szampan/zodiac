@@ -3,15 +3,14 @@ from datetime import datetime
 class ZodiacSign:
     def __init__(self, name, start_date, end_date):
         self.name = name
-        self.start_date = datetime.strptime(start_date, '%Y/%m/%d')
-        self.end_date = datetime.strptime(end_date, '%Y/%m/%d')
+        self.start_date = datetime.strptime(start_date, '%Y/%m/%d').date()
+        self.end_date = datetime.strptime(end_date, '%Y/%m/%d').date()
 
     def is_me(self, date):
         if date.month == 1 and date.day < 20:
             date = date.replace(year=1901)
         else:
             date = date.replace(year=1900)
-
         return self.start_date < date < self.end_date
 
 ZODIAC_SIGNS = [
@@ -30,9 +29,8 @@ ZODIAC_SIGNS = [
     
 ]    
 
-
 def get_sign(input):
-    date = datetime.strptime(input, '%d/%m/%Y')
+    date = input
     for sign in ZODIAC_SIGNS:
         if sign.is_me(date):
             return sign.name

@@ -34,9 +34,6 @@ INSTALLED_APPS = [
     # My Apps
     'zodiacs',
 
-    # Third party apps    
-    # 'bootstrap4',
-
     # Default
     'django.contrib.admin',
     'django.contrib.auth',
@@ -110,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pl'
 
 TIME_ZONE = 'UTC'
 
