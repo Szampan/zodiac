@@ -28,8 +28,8 @@ ZODIAC_SIGNS = [
     ZodiacSign('Skorpion', '1900/10/23', '1900/11/21'),
     ZodiacSign('Strzelec', '1900/11/22', '1900/12/21'),
     ZodiacSign('Koziorożec', '1900/12/22', '1901/1/19'),
-    
 ]    
+
 
 def get_sign(input):
     date = input
@@ -37,18 +37,9 @@ def get_sign(input):
         if sign.is_me(date):
             return sign.name
 
+
 def print(x=None):
     if x:
         return logging.debug(f'▬▬▬ {x} ▬▬▬')
     return ('')
     
-
-
-# def is_input_valid(input):
-#     format = '%d/%m/%Y'
-#     valid = True
-#     try:
-#         valid = bool(datetime.strptime(input, format))
-#     except ValueError:
-#         valid = False
-#     return valid
