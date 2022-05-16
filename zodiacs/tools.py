@@ -1,5 +1,7 @@
 from datetime import datetime     
 
+import logging
+
 class ZodiacSign:
     def __init__(self, name, start_date, end_date):
         self.name = name
@@ -35,11 +37,18 @@ def get_sign(input):
         if sign.is_me(date):
             return sign.name
 
-def is_input_valid(input):
-    format = '%d/%m/%Y'
-    valid = True
-    try:
-        valid = bool(datetime.strptime(input, format))
-    except ValueError:
-        valid = False
-    return valid
+def print(x=None):
+    if x:
+        return logging.debug(f'▬▬▬ {x} ▬▬▬')
+    return ('')
+    
+
+
+# def is_input_valid(input):
+#     format = '%d/%m/%Y'
+#     valid = True
+#     try:
+#         valid = bool(datetime.strptime(input, format))
+#     except ValueError:
+#         valid = False
+#     return valid
